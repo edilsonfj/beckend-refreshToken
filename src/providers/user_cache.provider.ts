@@ -1,17 +1,19 @@
-import NodeCache from 'node-cache';
+import { User } from '../entities/user.entity';
+import { redis } from '../database/redis.client';
 
 export class UserCacheProvider {
-    private cache: NodeCache;
+    private redis = redis;
 
-    constructor() {
-        this.cache = new NodeCache();
+    constructor() { }
+
+    async set(key: string, value: User): Promise<void> {
+        const serializedValue = JSON.stringify(value);
+        await this.redis.set(key, serializedValue);
     }
 
-    set(key: string, value: any): void {
-        this.cache.set(key, value);
-    }
-
-    get(key: string): any {
-        return this.cache.get(key);
+    async get(key: string): Promise<User | undefined> {
+        const serializedValue = await this.redis.get(key);
+        const parsedValue = serializedValue ? JSON.parse(serializedValue) as User : undefined
+        return parsedValue;
     }
 }

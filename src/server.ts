@@ -1,5 +1,6 @@
 import express from 'express';
 import router from './routes/route';
+import './database/redis.client';
 require('dotenv').config();
 
 const PORT = process.env.PORT
