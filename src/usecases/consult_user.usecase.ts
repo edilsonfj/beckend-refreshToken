@@ -8,8 +8,13 @@ export class ConsultUserUseCase {
     this.service = new ConsultUserService();
   }
 
-  async consultUser(id: string): Promise<User | undefined> {
-    const user = await this.service.consultUser(id);
+  async consultUser(email: string): Promise<User | undefined> {
+    const user = await this.service.consultUser(email);
+
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+
     return user;
   }
 }

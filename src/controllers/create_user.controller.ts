@@ -14,8 +14,8 @@ export class CreateUserController {
         try {
             const createdUser = await this.useCase.createUser(name, email, password);
             res.status(201).json(createdUser);
-        } catch (error) {
-            res.status(500).json({ error: 'Erro interno do servidor' });
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
         }
     }
 }
